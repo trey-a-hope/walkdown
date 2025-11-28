@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:walkdown/path_finding_page.dart';
+import 'package:walkdown/presentation/games/walkdown_game.dart';
 
-void main() async => runApp(const PathFindingPage());
+void main() async => runApp(const WalkdownGame());
