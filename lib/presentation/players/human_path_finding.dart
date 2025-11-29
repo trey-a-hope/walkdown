@@ -4,7 +4,7 @@ import 'package:walkdown/presentation/players/skeleton_player.dart';
 
 class HumanPathFinding extends SkeletonPlayer with PathFinding, TapGesture {
   HumanPathFinding({required super.position}) {
-    setupPathFinding(pathLineStrokeWidth: 2, pathLineColor: Colors.white);
+    setupPathFinding(pathLineStrokeWidth: 1, pathLineColor: Colors.white);
   }
 
   @override
