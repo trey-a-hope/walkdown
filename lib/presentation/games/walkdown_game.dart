@@ -22,8 +22,10 @@ class WalkdownGame extends StatelessWidget {
           ),
         },
       ),
+      onReady: _onReady,
+
       overlayBuilderMap: {
-        'myWidget': (context, game) => Align(
+        'enterHouse': (context, game) => Align(
           alignment: AlignmentGeometry.bottomCenter,
           child: Padding(
             padding: const EdgeInsetsGeometry.only(bottom: 16),
@@ -36,13 +38,17 @@ class WalkdownGame extends StatelessWidget {
           ),
         ),
       },
-      initialActiveOverlays: const ['myWidget'],
 
+      // initialActiveOverlays: const ['enterHouse'],
       player: HumanPathFinding(position: startPos),
       cameraConfig: CameraConfig(
         zoom: getZoomFromMaxVisibleTile(context, Globals.tileSize, 20),
       ),
       backgroundColor: const Color(0xff20a0b4),
     );
+  }
+
+  void _onReady(BonfireGameInterface bonfireGameInterface) {
+    logger.d('"Walkdown" is now ready. 👍🏾');
   }
 }

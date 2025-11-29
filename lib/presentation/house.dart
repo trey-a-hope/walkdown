@@ -1,29 +1,18 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart';
-
 import 'package:walkdown/data/constants/globals.dart';
 import 'package:walkdown/main.dart';
-import 'package:walkdown/presentation/extensions/vector2_extensions.dart';
 
-class House extends GameDecoration with Vision {
+class House extends GameDecoration with Vision, TapGesture {
   bool _observedPlayer = false;
 
   House({required super.position})
-    : super(
-        size: Vector2(
-          Globals.tileSize,
-          Globals.tileSize,
-        ),
-      );
+    : super(size: Vector2(Globals.tileSize, Globals.tileSize));
 
   @override
   Future<void> onLoad() {
-    add(
-      RectangleHitbox(
-        size: Vector2.all(Globals.tileSize * 2),
-        position: size,
-      ),
-    );
+    // Collider property in Sprite Fusion is overriden if object is mapped out
+    // in the objectsBuilder
+    add(RectangleHitbox(size: size));
     return super.onLoad();
   }
 
@@ -32,27 +21,22 @@ class House extends GameDecoration with Vision {
     if (gameRef.player != null) {
       seeComponent(
         gameRef.player!,
-        observed: (player) => _observedPlayer = true,
+        observed: (_) => _observedPlayer = true,
         notObserved: () => _observedPlayer = false,
-        radiusVision: Globals.tileSize,
       );
     }
 
     super.update(dt);
   }
 
-  @override
-  void render(Canvas canvas) {
+  void enterHouse() {
     if (_observedPlayer) {
-      logger.d('House observed player');
-      // showAnimationStroke(
-      //   Colors.white,
-      //   2,
-      //   offset: Vector2(1, -1),
-      // );
+      logger.d('lets enter the house baby!');
     } else {
-      hideAnimationStroke();
+      logger.d('you are not close enough to enter the house');
     }
-    super.render(canvas);
   }
+
+  @override
+  void onTap() => enterHouse();
 }
