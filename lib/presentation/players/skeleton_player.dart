@@ -9,6 +9,7 @@ class SkeletonPlayer extends SimplePlayer
   SkeletonPlayer({required super.position})
     : super(
         animation: Animations.skeleton,
+        // Multiplied by 4 because sprite is super small
         size: Vector2.all(Globals.tileSize * 4),
         speed: 40,
       );

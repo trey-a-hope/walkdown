@@ -10,9 +10,11 @@ environment:
 dependencies:
   bonfire: ^3.16.1
   cupertino_icons: ^1.0.8
+  equatable: ^2.0.7
   flame_lint: ^1.4.2
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
   gap: ^3.0.1
   google_fonts: ^6.3.2
   logger: ^2.6.2
@@ -30,4 +32,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/players/
-    - assets/images/map/
+    - assets/images/map_world/
+    - assets/images/map_house_1/
+

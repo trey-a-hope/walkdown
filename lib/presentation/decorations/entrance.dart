@@ -1,12 +1,25 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:walkdown/data/constants/globals.dart';
+import 'package:walkdown/data/enums/map_index.dart';
 import 'package:walkdown/main.dart';
+import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 
-class House extends GameDecoration with Vision, TapGesture {
+class Entrance extends GameDecoration with Vision, TapGesture {
+  final MapCubit mapCubit;
+  final MapIndex mapIndex;
+
   bool _observedPlayer = false;
 
-  House({required super.position})
-    : super(size: Vector2(Globals.tileSize, Globals.tileSize));
+  Entrance({
+    required super.position,
+    required this.mapCubit,
+    required this.mapIndex,
+  }) : super(
+         size: Vector2(
+           Globals.tileSize,
+           Globals.tileSize,
+         ),
+       );
 
   @override
   Future<void> onLoad() {
@@ -29,14 +42,15 @@ class House extends GameDecoration with Vision, TapGesture {
     super.update(dt);
   }
 
-  void enterHouse() {
+  void enter() {
     if (_observedPlayer) {
-      logger.d('lets enter the house baby!');
+      logger.d('entering...');
+      mapCubit.updateMap(mapIndex);
     } else {
-      logger.d('you are not close enough to enter the house');
+      logger.d('you are not close enough to enter');
     }
   }
 
   @override
-  void onTap() => enterHouse();
+  void onTap() => enter();
 }
