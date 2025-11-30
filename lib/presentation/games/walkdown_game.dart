@@ -7,7 +7,7 @@ import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/components/decorations/entrance.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
-import 'package:walkdown/presentation/components/players/human_path_finding.dart';
+import 'package:walkdown/presentation/components/players/player_path_finder.dart';
 import 'package:walkdown/presentation/components/npcs/boy_npc.dart';
 
 class WalkdownGame extends StatelessWidget {
@@ -34,7 +34,7 @@ class WalkdownGame extends StatelessWidget {
             };
           case MapJson.house1:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
-            components.addAll([BoyNpc(position: defaultStartPos)]);
+            components.addAll([BoyNpc(position: defaultStartPos, speed: 20)]);
             objectsBuilder = {
               'Blue House Exit': (properties) => Entrance(
                 position: properties,
@@ -56,7 +56,7 @@ class WalkdownGame extends StatelessWidget {
             objectsBuilder: objectsBuilder,
           ),
           onReady: _onReady,
-          player: HumanPathFinding(position: playerStartPos),
+          player: PlayerPathFinder(position: playerStartPos),
           cameraConfig: CameraConfig(
             zoom: getZoomFromMaxVisibleTile(context, Globals.tileSize, 20),
           ),

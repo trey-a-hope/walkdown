@@ -1,13 +1,12 @@
-import 'package:bonfire/bonfire.dart';
+import 'package:walkdown/presentation/games/interfaces/i_sprite_sheet.dart';
 
-abstract class ISpriteSheet {
-  Future<SpriteSheet> load();
-}
-
-class BoySpriteSheet implements ISpriteSheet {
+class BoySpriteSheet extends ISpriteSheet {
   @override
-  Future<SpriteSheet> load() async {
-    final image = await Flame.images.load('players/boy_sprite_sheet.png');
-    return SpriteSheet.fromColumnsAndRows(image: image, columns: 4, rows: 7);
-  }
+  String get path => 'players/boy_sprite_sheet.png';
+
+  @override
+  int get columns => 4;
+
+  @override
+  int get rows => 7;
 }

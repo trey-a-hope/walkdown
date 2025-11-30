@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:walkdown/main.dart';
+import 'package:walkdown/presentation/animations/animations.dart';
 import 'package:walkdown/presentation/animations/interfaces/i_sprite_sheet_reader.dart';
 
 class BoyRunRight extends ISpriteSheetReader {

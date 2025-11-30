@@ -1,10 +1,11 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart';
 import 'package:walkdown/presentation/components/players/skeleton_player.dart';
 
-class HumanPathFinding extends SkeletonPlayer with PathFinding, TapGesture {
-  HumanPathFinding({required super.position}) {
-    setupPathFinding(pathLineStrokeWidth: 1, pathLineColor: Colors.white);
+class PlayerPathFinder extends SkeletonPlayer with PathFinding, TapGesture {
+  PlayerPathFinder({required super.position}) {
+    setupPathFinding(
+      linePathEnabled: const String.fromEnvironment('MODE') == 'DEBUG',
+    );
   }
 
   @override

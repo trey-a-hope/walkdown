@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/animations/boy/boy.dart';
 import 'package:walkdown/presentation/animations/skeleton/skeleton.dart';
 import 'package:walkdown/presentation/sprite_sheets/sprite_sheets.dart';
@@ -40,4 +39,8 @@ class Animations {
     idleRight: BoyIdleRight().animation,
     runRight: BoyRunRight().animation,
   );
+}
+
+class LoadedSpriteSheets {
+  static late SpriteSheet boy;
 }

@@ -1,4 +1,3 @@
-import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,10 +8,6 @@ import 'package:walkdown/presentation/cubits/map/map.dart';
 import 'package:walkdown/presentation/games/walkdown_game.dart';
 
 late Logger logger;
-
-class LoadedSpriteSheets {
-  static late SpriteSheet boy;
-}
 
 void main() async {
   await WidgetsFlutterBinding.ensureInitialized();
