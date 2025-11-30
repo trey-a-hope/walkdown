@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:walkdown/data/constants/globals.dart';
 import 'package:walkdown/data/enums/map_json.dart';
 import 'package:walkdown/main.dart';
+import 'package:walkdown/presentation/components/decorations/entrance.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
-import 'package:walkdown/presentation/decorations/entrance.dart';
-import 'package:walkdown/presentation/players/human_path_finding.dart';
+import 'package:walkdown/presentation/components/players/human_path_finding.dart';
+import 'package:walkdown/presentation/components/npcs/boy_npc.dart';
 
 class WalkdownGame extends StatelessWidget {
   const WalkdownGame({super.key});
@@ -18,10 +19,12 @@ class WalkdownGame extends StatelessWidget {
       builder: (context, mapState) {
         late Vector2 defaultStartPos;
         late Map<String, GameComponent Function(Vector2)> objectsBuilder;
+        final List<GameComponent> components = [];
 
         switch (mapState.mapJson) {
           case MapJson.world:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
+            components.addAll([]);
             objectsBuilder = {
               'Blue House Entrance': (properties) => Entrance(
                 position: properties,
@@ -31,6 +34,7 @@ class WalkdownGame extends StatelessWidget {
             };
           case MapJson.house1:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
+            components.addAll([BoyNpc(position: defaultStartPos)]);
             objectsBuilder = {
               'Blue House Exit': (properties) => Entrance(
                 position: properties,
@@ -46,6 +50,7 @@ class WalkdownGame extends StatelessWidget {
         return BonfireWidget(
           key: UniqueKey(),
           debugMode: const String.fromEnvironment('MODE') == 'DEBUG',
+          components: components,
           map: WorldMapBySpritefusion(
             WorldMapReader.fromAsset(mapState.mapJson.path),
             objectsBuilder: objectsBuilder,
@@ -55,7 +60,7 @@ class WalkdownGame extends StatelessWidget {
           cameraConfig: CameraConfig(
             zoom: getZoomFromMaxVisibleTile(context, Globals.tileSize, 20),
           ),
-          backgroundColor: const Color(0xff20a0b4),
+          backgroundColor: Colors.black,
         );
       },
     );
