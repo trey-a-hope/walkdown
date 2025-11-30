@@ -2,7 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:walkdown/data/constants/globals.dart';
-import 'package:walkdown/data/enums/map_index.dart';
+import 'package:walkdown/data/enums/map_json.dart';
 import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
@@ -19,23 +19,23 @@ class WalkdownGame extends StatelessWidget {
         late Vector2 defaultStartPos;
         late Map<String, GameComponent Function(Vector2)> objectsBuilder;
 
-        switch (mapState.mapIndex) {
-          case MapIndex.world:
+        switch (mapState.mapJson) {
+          case MapJson.world:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
             objectsBuilder = {
               'Blue House Entrance': (properties) => Entrance(
                 position: properties,
                 mapCubit: context.read<MapCubit>(),
-                mapIndex: MapIndex.house1,
+                mapJson: MapJson.house1,
               ),
             };
-          case MapIndex.house1:
+          case MapJson.house1:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
             objectsBuilder = {
               'Blue House Exit': (properties) => Entrance(
                 position: properties,
                 mapCubit: context.read<MapCubit>(),
-                mapIndex: MapIndex.world,
+                mapJson: MapJson.world,
               ),
             };
         }
@@ -47,7 +47,7 @@ class WalkdownGame extends StatelessWidget {
           key: UniqueKey(),
           debugMode: const String.fromEnvironment('MODE') == 'DEBUG',
           map: WorldMapBySpritefusion(
-            WorldMapReader.fromAsset(mapState.mapIndex.jsonPath),
+            WorldMapReader.fromAsset(mapState.mapJson.path),
             objectsBuilder: objectsBuilder,
           ),
           onReady: _onReady,

@@ -1,19 +1,19 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:walkdown/data/constants/globals.dart';
-import 'package:walkdown/data/enums/map_index.dart';
+import 'package:walkdown/data/enums/map_json.dart';
 import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 
 class Entrance extends GameDecoration with Vision, TapGesture {
   final MapCubit mapCubit;
-  final MapIndex mapIndex;
+  final MapJson mapJson;
 
   bool _observedPlayer = false;
 
   Entrance({
     required super.position,
     required this.mapCubit,
-    required this.mapIndex,
+    required this.mapJson,
   }) : super(
          size: Vector2(
            Globals.tileSize,
@@ -47,7 +47,7 @@ class Entrance extends GameDecoration with Vision, TapGesture {
       logger.d('entering...');
       // Capture current player position before switching maps
       final playerPosition = gameRef.player?.position;
-      mapCubit.updateMap(mapIndex, playerPosition: playerPosition);
+      mapCubit.updateMap(mapJson, playerPosition: playerPosition);
     } else {
       logger.d('you are not close enough to enter');
     }

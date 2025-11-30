@@ -1,26 +1,20 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:equatable/equatable.dart';
-import 'package:walkdown/data/enums/map_index.dart';
+import 'package:walkdown/data/enums/map_json.dart';
 
 class MapState extends Equatable {
-  final MapIndex mapIndex;
+  final MapJson mapJson;
   final Vector2? playerPosition;
 
-  const MapState({
-    required this.mapIndex,
-    this.playerPosition,
-  });
+  const MapState({required this.mapJson, this.playerPosition});
 
-  MapState copyWith({
-    MapIndex? mapIndex,
-    Vector2? playerPosition,
-  }) {
+  MapState copyWith({MapJson? mapJson, Vector2? playerPosition}) {
     return MapState(
-      mapIndex: mapIndex ?? this.mapIndex,
+      mapJson: mapJson ?? this.mapJson,
       playerPosition: playerPosition ?? this.playerPosition,
     );
   }
 
   @override
-  List<Object?> get props => [mapIndex, playerPosition];
+  List<Object?> get props => [mapJson, playerPosition];
 }
