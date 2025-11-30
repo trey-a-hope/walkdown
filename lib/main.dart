@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:walkdown/presentation/animations/animations.dart';
 import 'package:walkdown/presentation/cubits/map/map.dart';
 import 'package:walkdown/presentation/games/walkdown_game.dart';
 
 late Logger logger;
 
 void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
   logger = Logger(printer: PrefixPrinter(PrettyPrinter()));
+  await Animations.preloadSpriteSheets();
   runApp(const MyApp());
 }
 
@@ -18,11 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-    providers: [
-      BlocProvider<MapCubit>(
-        create: (context) => MapCubit(),
-      ),
-    ],
+    providers: [BlocProvider<MapCubit>(create: (context) => MapCubit())],
     child: const MyAppView(),
   );
 }
