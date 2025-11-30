@@ -14,12 +14,7 @@ class Entrance extends GameDecoration with Vision, TapGesture {
     required super.position,
     required this.mapCubit,
     required this.mapJson,
-  }) : super(
-         size: Vector2(
-           Globals.tileSize,
-           Globals.tileSize,
-         ),
-       );
+  }) : super(size: Vector2.all(Globals.tileSize));
 
   @override
   Future<void> onLoad() {
@@ -36,13 +31,14 @@ class Entrance extends GameDecoration with Vision, TapGesture {
         gameRef.player!,
         observed: (_) => _observedPlayer = true,
         notObserved: () => _observedPlayer = false,
+        radiusVision: Globals.tileSize,
       );
     }
 
     super.update(dt);
   }
 
-  void enter() {
+  void _enter() {
     if (_observedPlayer) {
       logger.d('entering...');
       // Capture current player position before switching maps
@@ -54,5 +50,5 @@ class Entrance extends GameDecoration with Vision, TapGesture {
   }
 
   @override
-  void onTap() => enter();
+  void onTap() => _enter();
 }

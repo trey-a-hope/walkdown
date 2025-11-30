@@ -18,30 +18,31 @@ class WalkdownGame extends StatelessWidget {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, mapState) {
         late Vector2 defaultStartPos;
-        late Map<String, GameComponent Function(Vector2)> objectsBuilder;
+        final Map<String, GameComponent Function(Vector2)> objectsBuilder = {};
         final List<GameComponent> components = [];
 
         switch (mapState.mapJson) {
           case MapJson.world:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
-            components.addAll([]);
-            objectsBuilder = {
-              'Blue House Entrance': (properties) => Entrance(
-                position: properties,
+            components.addAll([
+              Entrance(
+                position: Vector2(Globals.tileSize * 4, Globals.tileSize * 5),
                 mapCubit: context.read<MapCubit>(),
                 mapJson: MapJson.house1,
               ),
-            };
+            ]);
+            objectsBuilder.addAll({});
           case MapJson.house1:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
-            components.addAll([BoyNpc(position: defaultStartPos, speed: 20)]);
-            objectsBuilder = {
-              'Blue House Exit': (properties) => Entrance(
-                position: properties,
+            components.addAll([
+              BoyNpc(position: defaultStartPos, speed: 20),
+              Entrance(
+                position: Vector2(Globals.tileSize * 4, Globals.tileSize * 7),
                 mapCubit: context.read<MapCubit>(),
                 mapJson: MapJson.world,
               ),
-            };
+            ]);
+            objectsBuilder.addAll({});
         }
 
         // Use stored position if available, otherwise use default
@@ -50,6 +51,8 @@ class WalkdownGame extends StatelessWidget {
         return BonfireWidget(
           key: UniqueKey(),
           debugMode: const String.fromEnvironment('MODE') == 'DEBUG',
+          // collisionAreaColor: Colors.red,
+          // showCollisionArea: true,
           components: components,
           map: WorldMapBySpritefusion(
             WorldMapReader.fromAsset(mapState.mapJson.path),
