@@ -22,16 +22,18 @@ class WalkdownGame extends StatelessWidget {
         final List<GameComponent> components = [];
 
         switch (mapState.mapJson) {
+          // World
           case MapJson.world:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
             components.addAll([
               Entrance(
-                position: Vector2(Globals.tileSize * 4, Globals.tileSize * 5),
+                position: Vector2(Globals.tileSize * 6, Globals.tileSize * 7),
                 mapCubit: context.read<MapCubit>(),
                 mapJson: MapJson.house1,
               ),
             ]);
             objectsBuilder.addAll({});
+          // House 1
           case MapJson.house1:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
             components.addAll([
