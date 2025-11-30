@@ -45,7 +45,9 @@ class Entrance extends GameDecoration with Vision, TapGesture {
   void enter() {
     if (_observedPlayer) {
       logger.d('entering...');
-      mapCubit.updateMap(mapIndex);
+      // Capture current player position before switching maps
+      final playerPosition = gameRef.player?.position;
+      mapCubit.updateMap(mapIndex, playerPosition: playerPosition);
     } else {
       logger.d('you are not close enough to enter');
     }

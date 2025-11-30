@@ -5,6 +5,7 @@ import 'package:walkdown/data/constants/globals.dart';
 import 'package:walkdown/data/enums/map_index.dart';
 import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
+import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
 import 'package:walkdown/presentation/decorations/entrance.dart';
 import 'package:walkdown/presentation/players/human_path_finding.dart';
 
@@ -13,14 +14,14 @@ class WalkdownGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapIndex>(
-      builder: (context, mapIndex) {
-        late Vector2 startPos;
+    return BlocBuilder<MapCubit, MapState>(
+      builder: (context, mapState) {
+        late Vector2 defaultStartPos;
         late Map<String, GameComponent Function(Vector2)> objectsBuilder;
 
-        switch (mapIndex) {
+        switch (mapState.mapIndex) {
           case MapIndex.world:
-            startPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
+            defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
             objectsBuilder = {
               'Blue House Entrance': (properties) => Entrance(
                 position: properties,
@@ -29,7 +30,7 @@ class WalkdownGame extends StatelessWidget {
               ),
             };
           case MapIndex.house1:
-            startPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
+            defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
             objectsBuilder = {
               'Blue House Exit': (properties) => Entrance(
                 position: properties,
@@ -39,15 +40,18 @@ class WalkdownGame extends StatelessWidget {
             };
         }
 
+        // Use stored position if available, otherwise use default
+        final playerStartPos = mapState.playerPosition ?? defaultStartPos;
+
         return BonfireWidget(
           key: UniqueKey(),
-          debugMode: true,
+          debugMode: const String.fromEnvironment('MODE') == 'DEBUG',
           map: WorldMapBySpritefusion(
-            WorldMapReader.fromAsset(mapIndex.jsonPath),
+            WorldMapReader.fromAsset(mapState.mapIndex.jsonPath),
             objectsBuilder: objectsBuilder,
           ),
           onReady: _onReady,
-          player: HumanPathFinding(position: startPos),
+          player: HumanPathFinding(position: playerStartPos),
           cameraConfig: CameraConfig(
             zoom: getZoomFromMaxVisibleTile(context, Globals.tileSize, 20),
           ),
