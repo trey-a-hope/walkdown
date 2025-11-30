@@ -9,6 +9,7 @@ import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
 import 'package:walkdown/presentation/components/players/player_path_finder.dart';
 import 'package:walkdown/presentation/components/npcs/boy_npc.dart';
+import 'package:walkdown/presentation/extensions/double_tuple_int_extensions.dart';
 
 class WalkdownGame extends StatelessWidget {
   const WalkdownGame({super.key});
@@ -17,35 +18,30 @@ class WalkdownGame extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, mapState) {
-        late Vector2 defaultStartPos;
+        final Vector2 defaultStartPos = (3, 6).plot;
         final Map<String, GameComponent Function(Vector2)> objectsBuilder = {};
         final List<GameComponent> components = [];
+
+        final house1Entrance = Entrance(
+          position: (6, 7).plot,
+          mapCubit: context.read<MapCubit>(),
+          mapJson: MapJson.house1,
+        );
+
+        final house1Exit = Entrance(
+          position: (4, 7).plot,
+          mapCubit: context.read<MapCubit>(),
+          mapJson: MapJson.world,
+        );
 
         switch (mapState.mapJson) {
           // World
           case MapJson.world:
-            defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
-            components.addAll([
-              Entrance(
-                position: Vector2(Globals.tileSize * 6, Globals.tileSize * 7),
-                mapCubit: context.read<MapCubit>(),
-                mapJson: MapJson.house1,
-              ),
-            ]);
+            components.addAll([house1Entrance]);
             objectsBuilder.addAll({});
           // House 1
           case MapJson.house1:
-            defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
-            components.addAll([
-              BoyNpc(
-                position: Vector2(Globals.tileSize * 3, Globals.tileSize * 3),
-              ),
-              Entrance(
-                position: Vector2(Globals.tileSize * 4, Globals.tileSize * 7),
-                mapCubit: context.read<MapCubit>(),
-                mapJson: MapJson.world,
-              ),
-            ]);
+            components.addAll([BoyNpc(position: (3, 3).plot), house1Exit]);
             objectsBuilder.addAll({});
         }
 
