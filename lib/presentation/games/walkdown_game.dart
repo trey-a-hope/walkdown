@@ -35,7 +35,9 @@ class WalkdownGame extends StatelessWidget {
           case MapJson.house1:
             defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
             components.addAll([
-              BoyNpc(position: defaultStartPos, speed: 20),
+              BoyNpc(
+                position: Vector2(Globals.tileSize * 3, Globals.tileSize * 3),
+              ),
               Entrance(
                 position: Vector2(Globals.tileSize * 4, Globals.tileSize * 7),
                 mapCubit: context.read<MapCubit>(),

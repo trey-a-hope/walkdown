@@ -9,8 +9,12 @@ class BoyNpc extends SimpleNpc
     with HandleForces, BlockMovementCollision, RandomMovement, TapGesture {
   bool _observedPlayer = false;
 
-  BoyNpc({required super.position, required super.speed})
-    : super(animation: Animations.boy, size: Vector2.all(Globals.tileSize));
+  BoyNpc({required super.position})
+    : super(
+        animation: Animations.boy,
+        size: Vector2.all(Globals.tileSize),
+        speed: 20,
+      );
 
   @override
   Future<void> onLoad() async {
@@ -20,7 +24,7 @@ class BoyNpc extends SimpleNpc
 
   @override
   void update(double dt) {
-    runRandomMovement(dt, speed: speed, maxDistance: 50, minDistance: 25);
+    runRandomMovement(dt, speed: speed, maxDistance: 100, minDistance: 50);
 
     if (gameRef.player != null) {
       seeComponent(
