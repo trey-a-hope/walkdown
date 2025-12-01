@@ -7,9 +7,6 @@ class MapCubit extends Cubit<MapState> {
   MapCubit() : super(const MapState(mapJson: MapJson.world));
 
   void updateMap(MapJson mapJson, {Vector2? playerPosition}) {
-    emit(state.copyWith(
-      mapJson: mapJson,
-      playerPosition: playerPosition,
-    ));
+    emit(state.copyWith(mapJson: mapJson, playerPosition: playerPosition));
   }
 }

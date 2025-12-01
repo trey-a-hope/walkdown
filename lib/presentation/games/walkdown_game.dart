@@ -9,6 +9,7 @@ import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
 import 'package:walkdown/presentation/components/players/player_path_finder.dart';
 import 'package:walkdown/presentation/components/npcs/boy_npc.dart';
+import 'package:walkdown/presentation/extensions/double_tuple_int_extensions.dart';
 
 class WalkdownGame extends StatelessWidget {
   const WalkdownGame({super.key});
@@ -17,31 +18,31 @@ class WalkdownGame extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, mapState) {
-        late Vector2 defaultStartPos;
-        late Map<String, GameComponent Function(Vector2)> objectsBuilder;
+        final Vector2 defaultStartPos = (3, 6).plot;
+        final Map<String, GameComponent Function(Vector2)> objectsBuilder = {};
         final List<GameComponent> components = [];
 
+        final house1Entrance = Entrance(
+          position: (6, 7).plot,
+          mapCubit: context.read<MapCubit>(),
+          mapJson: MapJson.house1,
+        );
+
+        final house1Exit = Entrance(
+          position: (4, 7).plot,
+          mapCubit: context.read<MapCubit>(),
+          mapJson: MapJson.world,
+        );
+
         switch (mapState.mapJson) {
+          // World
           case MapJson.world:
-            defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 6);
-            components.addAll([]);
-            objectsBuilder = {
-              'Blue House Entrance': (properties) => Entrance(
-                position: properties,
-                mapCubit: context.read<MapCubit>(),
-                mapJson: MapJson.house1,
-              ),
-            };
+            components.addAll([house1Entrance]);
+            objectsBuilder.addAll({});
+          // House 1
           case MapJson.house1:
-            defaultStartPos = Vector2(Globals.tileSize, Globals.tileSize * 2);
-            components.addAll([BoyNpc(position: defaultStartPos, speed: 20)]);
-            objectsBuilder = {
-              'Blue House Exit': (properties) => Entrance(
-                position: properties,
-                mapCubit: context.read<MapCubit>(),
-                mapJson: MapJson.world,
-              ),
-            };
+            components.addAll([BoyNpc(position: (3, 3).plot), house1Exit]);
+            objectsBuilder.addAll({});
         }
 
         // Use stored position if available, otherwise use default
@@ -50,6 +51,8 @@ class WalkdownGame extends StatelessWidget {
         return BonfireWidget(
           key: UniqueKey(),
           debugMode: const String.fromEnvironment('MODE') == 'DEBUG',
+          // collisionAreaColor: Colors.red,
+          // showCollisionArea: true,
           components: components,
           map: WorldMapBySpritefusion(
             WorldMapReader.fromAsset(mapState.mapJson.path),
