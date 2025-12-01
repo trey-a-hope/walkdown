@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:walkdown/data/constants/globals.dart';
 import 'package:walkdown/data/enums/map_json.dart';
 import 'package:walkdown/main.dart';
+import 'package:walkdown/presentation/components/decorations/computer_decoration.dart';
 import 'package:walkdown/presentation/components/decorations/entrance.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
@@ -41,7 +42,14 @@ class WalkdownGame extends StatelessWidget {
             objectsBuilder.addAll({});
           // House 1
           case MapJson.house1:
-            components.addAll([BoyNpc(position: (3, 3).plot), house1Exit]);
+            components.addAll([
+              BoyNpc(position: (3, 3).plot),
+              house1Exit,
+              ComputerDecoration(
+                url: 'https://giftgrab.codemagic.app/',
+                position: (1, 4).plot,
+              ),
+            ]);
             objectsBuilder.addAll({});
         }
 
@@ -61,7 +69,7 @@ class WalkdownGame extends StatelessWidget {
           onReady: _onReady,
           player: PlayerPathFinder(position: playerStartPos),
           cameraConfig: CameraConfig(
-            zoom: getZoomFromMaxVisibleTile(context, Globals.tileSize, 20),
+            zoom: getZoomFromMaxVisibleTile(context, Globals.tileSize, 25),
           ),
           backgroundColor: Colors.black,
         );

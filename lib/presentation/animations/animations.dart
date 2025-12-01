@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:walkdown/presentation/animations/boy/boy.dart';
+import 'package:walkdown/presentation/animations/computer/computer.dart';
 import 'package:walkdown/presentation/animations/villager/villager.dart';
 import 'package:walkdown/presentation/animations/skeleton/skeleton.dart';
 import 'package:walkdown/presentation/sprite_sheets/sprite_sheets.dart';
@@ -53,6 +56,8 @@ class Animations {
     idleRight: VillagerIdleRight().animation,
     runRight: VillagerRunRight().animation,
   );
+
+  static FutureOr<SpriteAnimation> get computer => ComputerIdle().animation;
 }
 
 class LoadedSpriteSheets {

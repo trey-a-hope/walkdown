@@ -13,10 +13,7 @@ class ModalService {
       title: title,
       action: child == null
           ? null
-          : ShadButton.outline(
-              onPressed: onPressed,
-              child: child,
-            ),
+          : ShadButton.outline(onPressed: onPressed, child: child),
     ),
   );
 
