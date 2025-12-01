@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:walkdown/domain/services/launch_service.dart';
+import 'package:walkdown/domain/services/modal_service.dart';
 import 'package:walkdown/presentation/animations/animations.dart';
 import 'package:walkdown/presentation/cubits/map/map.dart';
 import 'package:walkdown/presentation/games/walkdown_game.dart';
@@ -20,9 +22,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-    providers: [BlocProvider<MapCubit>(create: (context) => MapCubit())],
-    child: const MyAppView(),
+  Widget build(BuildContext context) => MultiRepositoryProvider(
+    providers: [
+      RepositoryProvider<LaunchService>(create: (context) => LaunchService()),
+      RepositoryProvider<ModalService>(create: (context) => ModalService()),
+    ],
+    child: MultiBlocProvider(
+      providers: [BlocProvider<MapCubit>(create: (context) => MapCubit())],
+      child: const MyAppView(),
+    ),
   );
 }
 

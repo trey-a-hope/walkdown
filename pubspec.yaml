@@ -19,6 +19,7 @@ dependencies:
   google_fonts: ^6.3.2
   logger: ^2.6.2
   shadcn_ui: ^0.39.14
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_lints: ^6.0.0
@@ -34,4 +35,5 @@ flutter:
     - assets/images/players/
     - assets/images/map_world/
     - assets/images/house_1/
+    - assets/images/decorations/computer/
 
