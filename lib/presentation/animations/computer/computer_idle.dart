@@ -1,9 +1,8 @@
+import 'package:flame/src/sprite.dart';
+import 'package:walkdown/presentation/animations/animations.dart';
 import 'package:walkdown/presentation/animations/interfaces/i_sprite_iteration.dart';
 
 class ComputerIdle extends ISpriteIteration {
   @override
-  int get amount => 20;
-
-  @override
-  String get path => 'decorations/computer/pc_1_';
+  List<Sprite> get sprites => LoadedSpriteSheets.computer;
 }

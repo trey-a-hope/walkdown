@@ -5,25 +5,31 @@ import 'package:walkdown/presentation/animations/boy/boy.dart';
 import 'package:walkdown/presentation/animations/computer/computer.dart';
 import 'package:walkdown/presentation/animations/villager/villager.dart';
 import 'package:walkdown/presentation/animations/skeleton/skeleton.dart';
+import 'package:walkdown/presentation/sprite_sheets/computer_sprite_sheet.dart';
 import 'package:walkdown/presentation/sprite_sheets/sprite_sheets.dart';
 
+/// Centralized animations manager for all game entities.
+/// Provides animation configurations and handles sprite sheet preloading.
 class Animations {
+  // Private constructor to prevent instantiation
   Animations._();
 
+  /// Preloads all sprite sheets in parallel for optimal performance.
+  /// Must be called during app initialization before animations are used.
   static Future<void> preloadSpriteSheets() async {
-    final boy = BoySpriteSheet().load();
-    final villager = VillagerSpriteSheet().load();
-
-    final sheetsAsync = [boy, villager];
-
-    final res = await Future.wait<SpriteSheet>(sheetsAsync);
-
-    LoadedSpriteSheets.boy = res[0];
-    LoadedSpriteSheets.villager = res[1];
-
-    return;
+    // Load all sprite sheets concurrently and assign to LoadedSpriteSheets
+    await Future.wait([
+      BoySpriteSheet().load().then((sheet) => LoadedSpriteSheets.boy = sheet),
+      VillagerSpriteSheet()
+          .load()
+          .then((sheet) => LoadedSpriteSheets.villager = sheet),
+      ComputerSpriteSheet()
+          .load()
+          .then((sprites) => LoadedSpriteSheets.computer = sprites),
+    ]);
   }
 
+  /// Skeleton character animations (8-directional movement)
   static SimpleDirectionAnimation get skeleton => SimpleDirectionAnimation(
     idleDown: SkeletonIdle().animation,
     runDown: SkeletonWalk().animation,
@@ -35,6 +41,7 @@ class Animations {
     runRight: SkeletonWalk().animation,
   );
 
+  /// Boy character animations (8-directional movement)
   static SimpleDirectionAnimation get boy => SimpleDirectionAnimation(
     idleDown: BoyIdleDown().animation,
     runDown: BoyRunDown().animation,
@@ -46,6 +53,7 @@ class Animations {
     runRight: BoyRunRight().animation,
   );
 
+  /// Villager character animations (8-directional movement)
   static SimpleDirectionAnimation get villager => SimpleDirectionAnimation(
     idleDown: VillagerIdleDown().animation,
     runDown: VillagerRunDown().animation,
@@ -57,10 +65,19 @@ class Animations {
     runRight: VillagerRunRight().animation,
   );
 
-  static FutureOr<SpriteAnimation> get computer => ComputerIdle().animation;
+  /// Computer decoration idle animation
+  static SpriteAnimation get computer => ComputerIdle().animation;
 }
 
+/// Global container for preloaded sprite sheets.
+/// Populated by Animations.preloadSpriteSheets() during initialization.
 class LoadedSpriteSheets {
+  /// Boy character sprite sheet
   static late SpriteSheet boy;
+
+  /// Villager character sprite sheet
   static late SpriteSheet villager;
+
+  /// Computer decoration sprites (list of individual frames)
+  static late List<Sprite> computer;
 }
