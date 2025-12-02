@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 
 abstract class ISpriteIteration {
-  double get stepTime => 0.3;
+  double get stepTime => 1;
 
   List<Sprite> get sprites;
 

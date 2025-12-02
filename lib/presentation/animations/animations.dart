@@ -20,12 +20,12 @@ class Animations {
     // Load all sprite sheets concurrently and assign to LoadedSpriteSheets
     await Future.wait([
       BoySpriteSheet().load().then((sheet) => LoadedSpriteSheets.boy = sheet),
-      VillagerSpriteSheet()
-          .load()
-          .then((sheet) => LoadedSpriteSheets.villager = sheet),
-      ComputerSpriteSheet()
-          .load()
-          .then((sprites) => LoadedSpriteSheets.computer = sprites),
+      VillagerSpriteSheet().load().then(
+        (sheet) => LoadedSpriteSheets.villager = sheet,
+      ),
+      ComputerSpriteSheet().load().then(
+        (sprites) => LoadedSpriteSheets.computer = sprites,
+      ),
     ]);
   }
 
@@ -66,7 +66,8 @@ class Animations {
   );
 
   /// Computer decoration idle animation
-  static SpriteAnimation get computer => ComputerIdle().animation;
+  static SpriteAnimation get computerOn => ComputerOn().animation;
+  static SpriteAnimation get computerOff => ComputerOff().animation;
 }
 
 /// Global container for preloaded sprite sheets.

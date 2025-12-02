@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:walkdown/data/confiiguration/gap_sizes.dart';
+import 'package:walkdown/data/configuration/gap_sizes.dart';
 
 class ModalService {
   void shadToast(

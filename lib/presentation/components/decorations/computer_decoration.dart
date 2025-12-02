@@ -7,26 +7,40 @@ import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:walkdown/data/confiiguration/gap_sizes.dart';
+import 'package:walkdown/data/configuration/gap_sizes.dart';
 import 'package:walkdown/presentation/extensions/bool_extensions.dart';
 
 class ComputerDecoration extends GameDecoration with Vision, TapGesture {
   final String url;
+  bool _active = false;
+
+  bool get active => _active;
+  set active(bool value) {
+    if (_active != value) {
+      _active = value;
+      _updateAnimation();
+    }
+  }
 
   bool _observedPlayer = false;
 
   ComputerDecoration({required this.url, required super.position})
     : super.withAnimation(
-        animation: Animations.computer,
+        animation: Animations.computerOff,
         size: Vector2.all(Globals.tileSize),
       );
 
   @override
-  Future<void> onLoad() {
+  Future<void> onLoad() async {
+    await super.onLoad();
     // Collider property in Sprite Fusion is overriden if object is mapped out
     // in the objectsBuilder
     add(RectangleHitbox(size: size));
-    return super.onLoad();
+  }
+
+  void _updateAnimation() {
+    logger.d('Setting animation to ${active ? 'computer' : 'computer off'}');
+    this.setAnimation(active ? Animations.computerOn : Animations.computerOff);
   }
 
   @override
@@ -52,11 +66,8 @@ class ComputerDecoration extends GameDecoration with Vision, TapGesture {
     final modalService = context.read<ModalService>();
 
     if (_observedPlayer) {
-      logger.d('toggling computer...');
-
-      TalkDialog.show(
-        context,
-        [
+      if (!active) {
+        await TalkDialog.show(context, [
           Say(
             padding: EdgeInsets.all(GapSizes.mediumGap.mainAxisExtent),
             text: [
@@ -68,20 +79,23 @@ class ComputerDecoration extends GameDecoration with Vision, TapGesture {
               TextSpan(text: ' game, lets play!', style: textTheme.h4),
             ],
           ),
-        ],
-        onClose: () async {
-          final confirm = await modalService.shadConfirmationDialog(
-            context,
-            title: const Text('Open Gift Grab'),
-            description: const Text('Press yes to confirm'),
-          );
+        ]);
 
-          if (!confirm.falseIfNull()) return;
+        final confirm = await modalService.shadConfirmationDialog(
+          context,
+          title: const Text('Open Gift Grab'),
+          description: const Text('Press yes to confirm'),
+        );
 
-          logger.d('opening $url');
-          launchService.launch(url);
-        },
-      );
+        if (!confirm.falseIfNull()) return;
+
+        logger.d('opening $url');
+        launchService.launch(url);
+
+        active = true;
+      } else {
+        active = false;
+      }
     } else {
       logger.d('you are not close enough to turn on the computer');
     }
