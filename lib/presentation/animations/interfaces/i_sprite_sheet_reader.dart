@@ -17,16 +17,14 @@ abstract class ISpriteSheetReader {
   /// Duration of each frame in seconds
   double get stepTime => 0.1;
 
-  SpriteAnimation get animation {
-    return SpriteAnimation.variableSpriteList(
-      List.generate(
-        amount,
-        (index) => spriteSheet.getSprite(
-          vertical ? startRow + index : startRow,
-          vertical ? startCol : startCol + index,
-        ),
+  SpriteAnimation get animation => SpriteAnimation.spriteList(
+    List.generate(
+      amount,
+      (index) => spriteSheet.getSprite(
+        vertical ? startRow + index : startRow,
+        vertical ? startCol : startCol + index,
       ),
-      stepTimes: List.filled(amount, stepTime),
-    );
-  }
+    ),
+    stepTime: stepTime,
+  );
 }

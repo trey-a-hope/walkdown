@@ -30,6 +30,7 @@ class Animations {
   }
 
   /// Skeleton character animations (8-directional movement)
+  /// TODO (Trey) - Return SpriteAnimation not Future<SpriteAnimation>
   static SimpleDirectionAnimation get skeleton => SimpleDirectionAnimation(
     idleDown: SkeletonIdle().animation,
     runDown: SkeletonWalk().animation,
