@@ -1,0 +1,8 @@
+display_name: WalkDown
+msix_version: 25.12.1.1
+# logo_path: C:\path\to\logo.png
+publisher_display_name: Company Name
+identity_name: company.suite.flutterapp
+capabilities: internetClient, location, microphone, webcam
+
+# fastforge package --platform windows --targets msix
