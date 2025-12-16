@@ -3,7 +3,7 @@ import 'package:walkdown/data/constants/globals.dart';
 import 'package:walkdown/data/enums/map_json.dart';
 import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
-import 'package:walkdown/presentation/extensions/double_tuple_int_extensions.dart';
+import 'package:walkdown/presentation/extensions/grid_extensions.dart';
 
 class Entrance extends GameDecoration with Vision, TapGesture {
   final MapCubit mapCubit;
@@ -42,18 +42,20 @@ class Entrance extends GameDecoration with Vision, TapGesture {
   void _enter() {
     if (_observedPlayer) {
       logger.d('entering...');
-      mapCubit.updateMap(mapJson, playerPosition: determineStartingPosition());
+      mapCubit.updateMap(mapJson, playerPosition: _determineStartingPosition());
     } else {
       logger.d('you are not close enough to enter');
     }
   }
 
   // TODO (Trey) - Make dynamic to handle different enter/exit combinations.
-  Vector2 determineStartingPosition() {
+  Vector2 _determineStartingPosition() {
     switch (mapJson) {
       case MapJson.world:
         return (6, 8).plot;
       case MapJson.house1:
+        return (4, 6).plot;
+      case MapJson.house2:
         return (4, 6).plot;
     }
   }

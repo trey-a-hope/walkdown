@@ -10,7 +10,7 @@ import 'package:walkdown/presentation/cubits/map/cubit/map_cubit.dart';
 import 'package:walkdown/presentation/cubits/map/cubit/map_state.dart';
 import 'package:walkdown/presentation/components/players/player_path_finder.dart';
 import 'package:walkdown/presentation/components/npcs/boy_npc.dart';
-import 'package:walkdown/presentation/extensions/double_tuple_int_extensions.dart';
+import 'package:walkdown/presentation/extensions/grid_extensions.dart';
 
 class WalkdownGame extends StatelessWidget {
   const WalkdownGame({super.key});
@@ -29,6 +29,12 @@ class WalkdownGame extends StatelessWidget {
           mapJson: MapJson.house1,
         );
 
+        final house2Entrance = Entrance(
+          position: (16, 9).plot,
+          mapCubit: context.read<MapCubit>(),
+          mapJson: MapJson.house1,
+        );
+
         final house1Exit = Entrance(
           position: (4, 7).plot,
           mapCubit: context.read<MapCubit>(),
@@ -38,7 +44,7 @@ class WalkdownGame extends StatelessWidget {
         switch (mapState.mapJson) {
           // World
           case MapJson.world:
-            components.addAll([house1Entrance]);
+            components.addAll([house1Entrance, house2Entrance]);
             objectsBuilder.addAll({});
           // House 1
           case MapJson.house1:
@@ -50,6 +56,9 @@ class WalkdownGame extends StatelessWidget {
                 position: (1, 4).plot,
               ),
             ]);
+            objectsBuilder.addAll({});
+          case MapJson.house2:
+            components.addAll([]);
             objectsBuilder.addAll({});
         }
 
