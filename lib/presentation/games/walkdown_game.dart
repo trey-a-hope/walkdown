@@ -26,20 +26,38 @@ class WalkdownGame extends StatelessWidget {
         final house1Entrance = Entrance(
           position: (6, 7).plot,
           mapCubit: context.read<MapCubit>(),
-          mapJson: MapJson.house1,
-        );
-
-        final house2Entrance = Entrance(
-          position: (16, 9).plot,
-          mapCubit: context.read<MapCubit>(),
-          mapJson: MapJson.house1,
+          from: MapJson.world,
+          to: MapJson.house1,
         );
 
         final house1Exit = Entrance(
           position: (4, 7).plot,
           mapCubit: context.read<MapCubit>(),
-          mapJson: MapJson.world,
+          from: MapJson.house1,
+          to: MapJson.world,
         );
+
+        final house2Entrance = Entrance(
+          position: (16, 9).plot,
+          mapCubit: context.read<MapCubit>(),
+          from: MapJson.world,
+          to: MapJson.house2,
+        );
+
+        final house2Exits = [
+          Entrance(
+            position: (6, 8).plot,
+            mapCubit: context.read<MapCubit>(),
+            from: MapJson.house2,
+            to: MapJson.world,
+          ),
+          Entrance(
+            position: (7, 8).plot,
+            mapCubit: context.read<MapCubit>(),
+            from: MapJson.house2,
+            to: MapJson.world,
+          ),
+        ];
 
         switch (mapState.mapJson) {
           // World
@@ -58,7 +76,7 @@ class WalkdownGame extends StatelessWidget {
             ]);
             objectsBuilder.addAll({});
           case MapJson.house2:
-            components.addAll([]);
+            components.addAll([...house2Exits]);
             objectsBuilder.addAll({});
         }
 

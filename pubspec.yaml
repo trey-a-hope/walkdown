@@ -2,7 +2,7 @@ name: walkdown
 description: "A new Flutter project."
 publish_to: 'none'
 
-version: 25.11.1+2
+version: 25.12.1+3
 
 environment:
   sdk: ^3.10.0
@@ -35,5 +35,6 @@ flutter:
     - assets/images/players/
     - assets/images/map_world/
     - assets/images/house_1/
+    - assets/images/house_2/
     - assets/images/decorations/computer/
 
