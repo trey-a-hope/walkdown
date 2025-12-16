@@ -50,7 +50,6 @@ class Entrance extends GameDecoration with Vision, TapGesture {
     }
   }
 
-  // TODO (Trey) - Make dynamic to handle different enter/exit combinations.
   Vector2 _determineStartingPosition() {
     switch (to) {
       case MapJson.world:
