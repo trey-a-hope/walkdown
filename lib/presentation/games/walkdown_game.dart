@@ -1,7 +1,10 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:walkdown/data/constants/globals.dart';
+import 'package:walkdown/data/enums/audio_files.dart';
 import 'package:walkdown/data/enums/map_json.dart';
 import 'package:walkdown/main.dart';
 import 'package:walkdown/presentation/components/decorations/computer_decoration.dart';
@@ -12,17 +15,28 @@ import 'package:walkdown/presentation/components/players/player_path_finder.dart
 import 'package:walkdown/presentation/components/npcs/boy_npc.dart';
 import 'package:walkdown/presentation/extensions/grid_extensions.dart';
 
+part '../screens/start_screen.dart';
+
+/// Main game widget that manages different map states and game components
 class WalkdownGame extends StatelessWidget {
   const WalkdownGame({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Rebuild when map state changes (e.g., entering/exiting buildings)
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, mapState) {
+        // Show start screen if game hasn't started yet
+        if (mapState.mapJson == MapJson.start) {
+          return const StartScreen();
+        }
+
+        // Default spawn position for new maps
         final Vector2 defaultStartPos = (3, 6).plot;
         final Map<String, GameComponent Function(Vector2)> objectsBuilder = {};
         final List<GameComponent> components = [];
 
+        // Define entrance/exit points for map transitions
         final house1Entrance = Entrance(
           position: (6, 7).plot,
           mapCubit: context.read<MapCubit>(),
@@ -44,6 +58,7 @@ class WalkdownGame extends StatelessWidget {
           to: MapJson.house2,
         );
 
+        // House 2 has multiple exit tiles
         final house2Exits = [
           Entrance(
             position: (6, 8).plot,
@@ -59,8 +74,10 @@ class WalkdownGame extends StatelessWidget {
           ),
         ];
 
+        // Configure components based on current map
         switch (mapState.mapJson) {
           // World
+          case MapJson.start:
           case MapJson.world:
             components.addAll([house1Entrance, house2Entrance]);
             objectsBuilder.addAll({});
@@ -80,11 +97,11 @@ class WalkdownGame extends StatelessWidget {
             objectsBuilder.addAll({});
         }
 
-        // Use stored position if available, otherwise use default
+        // Restore player position from state when transitioning maps
         final playerStartPos = mapState.playerPosition ?? defaultStartPos;
 
         return BonfireWidget(
-          key: UniqueKey(),
+          key: UniqueKey(), // Force rebuild when switching maps
           debugMode: const String.fromEnvironment('MODE') == 'DEBUG',
           // collisionAreaColor: Colors.red,
           // showCollisionArea: true,
@@ -104,7 +121,9 @@ class WalkdownGame extends StatelessWidget {
     );
   }
 
+  /// Called when the game engine finishes initialization
   void _onReady(BonfireGameInterface bonfireGameInterface) {
     logger.d('"Walkdown" is now ready. 👍🏾');
+    FlameAudio.bgm.play(AudioFiles.backgroundMusic.path);
   }
 }

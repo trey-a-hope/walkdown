@@ -52,6 +52,7 @@ class Entrance extends GameDecoration with Vision, TapGesture {
 
   Vector2 _determineStartingPosition() {
     switch (to) {
+      case MapJson.start:
       case MapJson.world:
         if (from == MapJson.house1) return (6, 8).plot;
         if (from == MapJson.house2) return (16, 10).plot;
