@@ -124,6 +124,7 @@ class WalkdownGame extends StatelessWidget {
   /// Called when the game engine finishes initialization
   void _onReady(BonfireGameInterface bonfireGameInterface) {
     logger.d('"Walkdown" is now ready. 👍🏾');
-    FlameAudio.bgm.play(AudioFiles.backgroundMusic.path);
+    // TODO (Trey) - Check if audio is already playing before playing it again.
+    // FlameAudio.bgm.play(AudioFiles.backgroundMusic.path);
   }
 }
